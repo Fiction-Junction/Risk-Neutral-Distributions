@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project computes risk-neutral distributions from QQQ (Nasdaq-100) options market data, and is meant to supplement the  accompanying main paper "Risk-Neutral Distributions" on risk-neutral measures and density distributions.
+This project computes risk-neutral distributions from QQQ (Nasdaq-100) options market data, and is meant to supplement the accompanying main paper on risk-neutral measures and density distributions.
 
 This project uses options pricing data combined with spot prices and interest rates to extract the market's implied probability distribution of future spot prices at different expiration dates.
 
@@ -37,7 +37,7 @@ This project uses options pricing data combined with spot prices and interest ra
 │  ├── helpers.py  # Utility functions for data processing
 │  └── validators.py  # Data validation functions
 │
-└── Risk-Neutral Distributions.pdf # main paper   
+└── main_paper.pdf # main paper   
 ```
 
 ## Data Files
