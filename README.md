@@ -6,14 +6,6 @@ This project computes risk-neutral distributions from QQQ options market data, a
 
 To compute the distributions, we use options pricing data, combined with spot prices and interest rates, to extract the market's implied probability distribution of future spot prices at different expiration dates.
 
-## Key Features
-
-- **Risk-Neutral Density Extraction**: Converts options call prices into RND distributions using the Breeden-Litzenberger (BL) methodology
-- **Multi-horizon Analysis**: Analyzes distributions across multiple expiration dates and snapshot dates
-- **Statistical Metrics**: Computes skewness, kurtosis, and other distribution characteristics
-- **Visualization**: Generates publication-quality plots of RND distributions
-- **Data Curation**: Handles missing data, applies put-call parity when needed, and validates monotonicity/convexity
-
 ## Project Structure
 
 ```
@@ -52,22 +44,6 @@ To compute the distributions, we use options pricing data, combined with spot pr
 
 Additionally, quarterly dividends data from Macrotrends was directly inserted into the relevant files without the use of a ```csv``` file.
 
-### Key Data Fields
-
-**Options Data**:
-- `snapshot_date`: Date when options were observed
-- `exp_date`: Expiration date of the option
-- `strike`: Strike price (K)
-- `call_bid`, `call_ask`: Call option bid/ask prices
-- `put_bid`, `put_ask`: Put option bid/ask prices
-- `call_iv`, `put_iv`: Implied volatility for calls/puts
-
-**Spot Prices**:
-- `date`, `open`, `high`, `low`, `close`, `volume`
-
-**Interest Rates**:
-- `date`, `rate`: Federal Funds effective rate (%)
-
 ## Core Modules
 
 ### `data_loader.py`
@@ -100,7 +76,7 @@ Where `N` is the number of snapshot dates to process. Note that the maximum is 1
 Core numerical functions for RND extraction:
 
 **`build_grid(options, spots, snap, exp, dte, r, dividends)`**
-- Extracts strike prices and call prices for a given snapshot/expiration pair
+- Extracts strike prices and call prices for a given snapshot-expiration pair
 - Uses put-call parity to impute missing call prices from puts
 - Applies forward price adjustments for cost-of-carry (rates and dividends)
 
@@ -111,11 +87,11 @@ Core numerical functions for RND extraction:
 **`bl(grid, curve, r, dte)`**
 - Implements the Breeden-Litzenberger formula
 - Extracts risk-neutral probability density: $f(S_T) = e^{rT} \frac{\partial^2 C}{\partial K^2}$
-- Returns (strikes, rnd) tuple representing the density distribution
+- Returns (strikes, rnd)-tuple grid
 
 ### `helpers.py`
 Utility functions:
-- `filter_options()`: Filter options by snapshot/expiration date
+- `filter_options()`: Filter options by snapshot-expiration date
 - `get_spot_price()`: Retrieve spot price for a given date
 - `get_call_price()`: Extract call price from options data
 - `get_put_price()`: Extract put price from options data
@@ -128,9 +104,8 @@ Data validation:
 - `mono_convex()`: Checks monotonicity and convexity of call price function
 - Ensures no arbitrage in pricing
 
-## Usage
+## Running main script
 
-### Running the Main Script
 Generate a random RND distribution visualization:
 ```bash
 python __main__.py
@@ -141,36 +116,6 @@ This will:
 2. Generate RND data for first $N$ snapshot dates
 3. Randomly select one distribution to plot
 4. Includes snapshot and expiration dates, DTE and skew
-
-## Technical Approach
-
-### Risk-Neutral Density Extraction
-
-The Breeden-Litzenberger formula extracts RND from call prices:
-
-$$f(S_T) = e^{rT} \frac{\partial^2 C}{\partial K^2}$$
-
-Where:
-- $C(K)$ = call price at strike K
-- $S$ = spot price
-- $T$ = time to expiration
-- $r$ = risk-free rate
-- $S_T$ = spot price at expiration
-
-**Steps**:
-1. Extract call prices for a range of strikes
-2. Fit smooth curve to call prices (PCHIP interpolation)
-3. Compute second derivative with respect to strike
-4. Discount by $e^{-rT}$ to get probability density
-
-### Cost-of-Carry Adjustments
-- Accounts for dividends: $q$ (quarterly dividend yield)
-- Forward price: $F = S \cdot e^{(r-q)T}$
-
-### Data Quality Controls
-- **Put-Call Parity**: Uses $C = P + e^{-rT}(F - K)$ to impute missing calls
-- **Monotonicity Check**: Ensures call prices are monotonically decreasing in strike
-- **Convexity Check**: Ensures second derivative is positive (no arbitrage)
 
 ## Dependencies
 
