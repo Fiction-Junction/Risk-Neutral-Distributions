@@ -38,7 +38,7 @@ To compute the distributions, we use options pricing data, combined with spot pr
 
 | File | Description | Source |
 |------|-------------|--------|
-| `qqq_options_100.csv` | Subset of options data (first 100 snapshot dates) | Derived from full dataset |
+| `qqq_options_100.csv` | Subset of options data (first 100 snapshot dates) | EODHD |
 | `qqq_daily_ohlcv_2024_2026.csv` | QQQ daily OHLCV prices | Yahoo Finance |
 | `DFF.csv` | Federal Funds effective rates | Federal Reserve Bank |
 
