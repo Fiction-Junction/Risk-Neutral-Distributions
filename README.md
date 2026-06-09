@@ -148,7 +148,7 @@ This will:
 
 The Breeden-Litzenberger formula extracts RND from call prices:
 
-$$f(S_T) = e^{rT} \frac{\partial^2 C(S, t; K)}{\partial K^2}$$
+$$f(S_T) = e^{rT} \frac{\partial^2 C}{\partial K^2}$$
 
 Where:
 - $C(K)$ = call price at strike K
@@ -168,7 +168,7 @@ Where:
 - Forward price: $F = S \cdot e^{(r-q)T}$
 
 ### Data Quality Controls
-- **Put-Call Parity**: Uses $C = P + Se^{-qT} - Ke^{-rT}$ to impute missing calls
+- **Put-Call Parity**: Uses $C = P + e^{-rT}(F - K)$ to impute missing calls
 - **Monotonicity Check**: Ensures call prices are monotonically decreasing in strike
 - **Convexity Check**: Ensures second derivative is positive (no arbitrage)
 
