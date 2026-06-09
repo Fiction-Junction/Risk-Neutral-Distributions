@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project computes risk-neutral distributions from QQQ (Nasdaq-100) options market data, and is meant to supplement the accompanying main paper on risk-neutral measures and density distributions.
+This project computes risk-neutral distributions from QQQ options market data, and is meant to supplement the accompanying main paper on risk-neutral measures and density distributions.
 
-This project uses options pricing data combined with spot prices and interest rates to extract the market's implied probability distribution of future spot prices at different expiration dates.
+To compute the distributions, we use options pricing data, combined with spot prices and interest rates, to extract the market's implied probability distribution of future spot prices at different expiration dates.
 
 ## Key Features
 
@@ -47,8 +47,10 @@ This project uses options pricing data combined with spot prices and interest ra
 | File | Description | Source |
 |------|-------------|--------|
 | `qqq_options_100.csv` | Subset of options data (first 100 snapshot dates) | Derived from full dataset |
-| `qqq_daily_ohlcv_2024_2026.csv` | QQQ daily OHLCV prices | Yahoo Finance / Market data |
-| `DFF.csv` | Federal Funds effective rates | Federal Reserve data |
+| `qqq_daily_ohlcv_2024_2026.csv` | QQQ daily OHLCV prices | Yahoo Finance |
+| `DFF.csv` | Federal Funds effective rates | Federal Reserve Bank |
+
+Additionally, quarterly dividends data from Macrotrends was directly inserted into the relevant files without the use of a ```csv``` file.
 
 ### Key Data Fields
 
@@ -82,7 +84,7 @@ Loads and preprocesses all input data:
 - `DIVIDENDS`: Dictionary of dividend amounts by date
 
 ### `dict_generator.py`
-Main orchestration module that generates the RND dictionary:
+Main module that generates the RND dictionary:
 - Iterates over snapshot dates and expiration dates
 - Calls pipeline functions for each combination
 - Filters for DTE (days to expiration) ≤ 64
@@ -165,7 +167,6 @@ Where:
 ### Cost-of-Carry Adjustments
 - Accounts for dividends: $q$ (quarterly dividend yield)
 - Forward price: $F = S \cdot e^{(r-q)T}$
-- Used to adjust strike prices in currency of the underlying
 
 ### Data Quality Controls
 - **Put-Call Parity**: Uses $C = P + Se^{-qT} - Ke^{-rT}$ to impute missing calls
@@ -196,13 +197,14 @@ Edit `__main__.py` to:
 
 ## File Sizes
 
-- `qqq_options_daily_anchors_2y.csv`: ~50+ MB (full dataset)
-- `qqq_options_100.csv`: ~1.7 MB (first 100 snapshot dates)
-- `qqq_daily_ohlcv_2024_2026.csv`: Small (daily OHLCV)
+- `qqq_options_daily_anchors_2y.csv`: 195.1 MB (full dataset, not included)
+- `qqq_options_100.csv`: 42.5 MB (first 100 snapshot dates)
+- `qqq_daily_ohlcv_2024_2026.csv`: 46 KB (daily OHLCV)
+- `DFF.csv`: 6 KB (daily rates)
 
 ## Notes
 
-- Original full dataset containing ~2 years of options data (2024-2026) is not included due to Github constraints
+- Original full dataset containing ~2 years of options data (2024-2026) is not included due to Github standard repository limits of 100 MiB
 - Reduced `qqq_options_100.csv` is used by default for faster processing
 - Maximum DTE considered is 64 days
 - Analysis is based on market data from 2024-2026 period
