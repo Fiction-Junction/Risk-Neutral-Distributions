@@ -138,10 +138,9 @@ python __main__.py
 
 This will:
 1. Load options, spot, rate, and dividend data
-2. Generate RND for first N snapshot dates
-3. Randomly select one distribution
-4. Compute skewness and other metrics
-5. Plot the RND
+2. Generate RND data for first $N$ snapshot dates
+3. Randomly select one distribution to plot
+4. Includes snapshot and expiration dates, DTE and skew
 
 ## Technical Approach
 
@@ -176,12 +175,12 @@ Where:
 ## Dependencies
 
 ```
-pandas>=1.5          # Data manipulation
-numpy>=1.23         # Numerical computing
-matplotlib>=3.6     # Visualization
-scipy>=1.9          # Scientific computing (interpolation, filters)
-jupyter>=1.0        # Jupyter notebooks
-yfinance>=1.4.1     # Historical market data
+pandas>=1.5  
+numpy>=1.23   
+matplotlib>=3.6     
+scipy>=1.9   # for interpolation and filters
+jupyter>=1.0 # Jupyter notebooks
+yfinance>=1.4.1 # Yahoo Finance
 ```
 
 Install with:
@@ -191,9 +190,7 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Edit `__main__.py` to:
-- Change `N` for number of snapshot dates to process
-- Modify visualization parameters
+Edit `__main__.py` by changing $N$ for the number of snapshot dates  from which the generated distribution is randomly chosen from ($N \leq 100$)
 
 ## File Sizes
 
